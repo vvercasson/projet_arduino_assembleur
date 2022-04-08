@@ -1,0 +1,16 @@
+x : integer;
+
+begin
+
+pinMode(PIN13, OUTPUT);
+
+
+loop {
+	puts("Thank your for these precisions\n");
+	digitalWrite(PIN13, HIGH);
+	delay_ms(1000);
+	digitalWrite(PIN13, LOW);
+	delay_ms(1000);
+}
+
+end
