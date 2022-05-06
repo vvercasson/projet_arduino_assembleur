@@ -5,6 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+// Un environnement qui enregistre 
+// un objet de type T pour chaque nom
+// par exemple le type de chaque nom de type déclaré
+// ou encore une expression variable (ExprVar) pour chaque nom de variable
 public class MapEnvironment<T> implements Environment<T> {
 
 	private Map<String, T> map;

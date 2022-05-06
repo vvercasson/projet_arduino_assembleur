@@ -3,6 +3,10 @@ package fr.ubordeaux.arduinoCode.ast;
 import fr.ubordeaux.arduinoCode.type.Type;
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// Une constante
+// La constante est nommée, et possède un identificateur unique
+// Sa valeur est connue au départ et inchangée
+// Son type est connu et peut être modifié (pour caster une valeur)
 public class ExprCONSTANT extends Expr {
 	
 	private static int nextId;

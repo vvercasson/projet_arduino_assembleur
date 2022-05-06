@@ -2,14 +2,19 @@ package fr.ubordeaux.arduinoCode.ast;
 
 import java.util.List;
 
+import fr.ubordeaux.arduinoCode.type.Type;
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// L'appel à une fonction
+// Son type est connu
+// Les arguments sont une liste d'expressions
+// Le résultat sera passé dans le registre de l'expression
+// La fonction est déclarée et définie par l'utilisateur ou alors prédéfinie (defined)
 public class ExprFUNCTION extends Expr {
 
 	public enum Defined {
-		//pinMode, digitalWrite, analogInput, analogWrite, peek, flush, putc, puts, digitalRead, analogRead, getc, available, delay, outputPin, inputPin
-		digitalRead, digitalWrite, analogReference, analogRead, analogWrite, pinMode,
-		peek, flush, putc, puts, getc, available, delay_s, delay_ms, delay_1s, delay
+		pinMode, digitalRead, digitalWrite, analogReference, analogRead, analogWrite, 
+		peek, flush, putc, puts, getc, available, delay_s, delay_ms
 	};
 	
 	private String name;
@@ -26,6 +31,17 @@ public class ExprFUNCTION extends Expr {
 		super(null);
 		this.defined = defined;
 		this.arguments = arguments;
+	}
+
+	public ExprFUNCTION(Defined defined, List<Expr> arguments, Type type) {
+		super(type);
+		this.defined = defined;
+		this.arguments = arguments;
+	}
+
+	public ExprFUNCTION(Defined defined, Type type) {
+		super(type);
+		this.defined = defined;
 	}
 
 	public ExprFUNCTION(Defined defined) {

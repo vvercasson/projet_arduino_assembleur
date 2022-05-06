@@ -2,6 +2,10 @@ package fr.ubordeaux.arduinoCode.ast;
 
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// Une affectation
+// Il est possible d'ajouter quelques opérateurs binaires
+// comme x += a pour désigner x = x + a
+// 
 public class StmAFF extends Stm {
 
 	public static enum Op {
@@ -30,11 +34,12 @@ public class StmAFF extends Stm {
 		return right;
 	}
 
+	public Op getOp() {
+		return op;
+	}
+
 	public void accept(Visitor visitor) throws Exception {
 		visitor.visit(this);
 	}
 
-	public Op getOp() {
-		return op;
-	}
 }

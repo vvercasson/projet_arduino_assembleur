@@ -2,6 +2,7 @@ package fr.ubordeaux.arduinoCode.ast;
 
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// L'instruction while (<expr>) <stm>
 public class StmWHILE extends Stm {
 
 	private Expr expr;
@@ -12,10 +13,6 @@ public class StmWHILE extends Stm {
 		this.stm = stm;
 	}
 
-	public void accept(Visitor visitor) throws Exception {
-		visitor.visit(this);
-	}
-
 	public Expr getExpr() {
 		return expr;
 	}
@@ -23,4 +20,9 @@ public class StmWHILE extends Stm {
 	public Stm getStm() {
 		return stm;
 	}
+
+	public void accept(Visitor visitor) throws Exception {
+		visitor.visit(this);
+	}
+
 }

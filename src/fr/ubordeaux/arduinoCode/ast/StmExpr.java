@@ -2,6 +2,8 @@ package fr.ubordeaux.arduinoCode.ast;
 
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// Une instruction qui revient à une expression qui a un effet
+// x++, x--.
 public class StmExpr extends Stm {
 
 	private Expr expr;

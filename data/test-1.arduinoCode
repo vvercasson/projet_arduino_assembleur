@@ -1,38 +1,6 @@
-/*
-x, y, z: boolean;
-
-k, l: integer;
-
-str: string[32];
-
-r: range from 1 to 100;
-
-s: set of unsigned byte ;
-
-l: list of integer ;
-
-e : enum (A, B, C);
-
-tree: struct {
-      left: integer;
-      right: integer;
-      tag: string[32];
-};
-
-x: integer;
-
-str: string[32];
-*/
-
+// Brancher PIN_13 à une LED reliée à GND avec une résistance de 330ohms
 
 begin
-outputPin(PIN13);
-loop {
-	puts("Vous avez un message");
-	putc(10);
-	delay();
-	digitalWrite(PIN13, HIGH);
-	delay();
-	digitalWrite(PIN13, LOW);
-}
+pinMode(PIN_13, OUTPUT);
+digitalWrite(PIN_13, HIGH);
 end

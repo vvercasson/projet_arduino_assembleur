@@ -1,8 +1,5 @@
 ;;;--------------------------------------------------------------;
-;; arduino.asm                                                    ;
-;;; Lionel Clément
-;;; 20220319
-;;; Cours de compilation Master Univ Bordeaux
+;;; ATmega328p
 ;;;--------------------------------------------------------------;
 
 ; ***** I/O REGISTER DEFINITIONS *****************************************
@@ -921,17 +918,4 @@
 .EQU INPUT, 0x0
 .EQU INPUT_PULLUP, 0x2
 .EQU OUTPUT, 0x1
-
-.extern uart0_getc
-.EQU uart_getc, uart0_getc
-.extern uart0_peek
-.EQU uart_peek, uart0_peek
-.extern uart0_putc
-.EQU uart_putc, uart0_putc
-.extern uart0_puts
-.EQU uart_puts, uart0_puts
-.extern uart0_available
-.EQU uart_available, uart0_available
-.extern uart0_flush
-.EQU uart_flush, uart0_flush
 

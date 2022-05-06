@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// L'instruction switch <(expr)> <stm>
 public class StmSWITCH extends Stm {
 
     private Expr expr;
@@ -14,10 +15,6 @@ public class StmSWITCH extends Stm {
 		this.list = list;
 	}
     
-	public void accept(Visitor visitor) throws Exception {
-		visitor.visit(this);
-	}
-
 	public Expr getExpr() {
 		return expr;
 	}
@@ -25,4 +22,9 @@ public class StmSWITCH extends Stm {
 	public List<StmCASE> getList() {
 		return list;
 	}
+
+	public void accept(Visitor visitor) throws Exception {
+		visitor.visit(this);
+	}
+
 }

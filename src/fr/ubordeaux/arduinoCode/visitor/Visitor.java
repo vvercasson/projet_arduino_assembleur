@@ -38,4 +38,12 @@ public interface Visitor {
 
 	void visit(StmWHILE stmWHILE) throws Exception;
 
+	void visit(DeclVAR declVAR) throws Exception;
+
+	void visit(ExprSET exprSET) throws Exception;
+
+	void visit(ExprLIST exprLIST) throws Exception;
+
+	void visit(ExprRANGE exprRANGE) throws Exception;;
+
 }

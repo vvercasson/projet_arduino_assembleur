@@ -1,10 +1,6 @@
 package fr.ubordeaux.arduinoCode.visitor;
 
-import fr.ubordeaux.arduinoCode.ast.Expr;
-import fr.ubordeaux.arduinoCode.ast.ExprCONSTANT;
-import fr.ubordeaux.arduinoCode.ast.ExprFUNCTION;
-import fr.ubordeaux.arduinoCode.ast.StmAFF;
-import fr.ubordeaux.arduinoCode.ast.StmIF;
+import fr.ubordeaux.arduinoCode.ast.*;
 import fr.ubordeaux.arduinoCode.type.TypeException;
 
 public class CheckTypeVisitor extends ConcreteVisitor {
@@ -19,15 +15,15 @@ public class CheckTypeVisitor extends ConcreteVisitor {
 	@Override
 	public void visit(StmAFF stm) throws TypeException {
 		System.err.println("*** visit(Stm) with " + this);
-		if (!stm.getLeft().getType().equivalent(stm.getRight().getType()))
-			throw new TypeException("types should be equivalent");
+		System.err.println("*** Unimplemented (CheckTypeVisitor.java line 18))");
+		//stm.getLeft().getType().attestEquivalentTo(stm.getRight().getType());
+		stm.getRight().setType(stm.getLeft().getType());
 	}
 
 	@Override
 	public void visit(StmIF stm) throws TypeException {
 		System.err.println("*** visit(StmIF) with " + this);
-		if (!stm.getExpr().getType().isBoolean())
-			throw new TypeException(stm.getToken(), "IF statement should have boolean expression");
+		stm.getExpr().getType().attestBoolean();
 	}
 
 	@Override
@@ -46,8 +42,24 @@ public class CheckTypeVisitor extends ConcreteVisitor {
 	}
 
 	@Override
+	public void visit(ExprUnary expr) throws Exception {
+		System.err.println("*** visit(ExprUnary) with " + this);
+		System.err.println("*** Unimplemented (CheckTypeVisitor.java line 47))");
+	}
+
+	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public String getPurpose() {
+		return " Teste le type de l'objet et déclanche une exception TypeException en cas d'échec";
+	}
+
+	@Override
+	public String getEffect() {
+		return "Déclanche une exception de type TypeException";
 	}
 
 }

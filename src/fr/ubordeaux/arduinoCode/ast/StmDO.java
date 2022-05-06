@@ -2,6 +2,7 @@ package fr.ubordeaux.arduinoCode.ast;
 
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// L'instruction do <stm> while (<expr>);
 public class StmDO extends Stm {
 
 	private Stm stm;

@@ -4,17 +4,18 @@ import java.util.List;
 
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// Une séquence d'instructions
 public class StmSeq extends Stm {
 
-	private List<Stm> list;
+	private List<Stm> stms;
 
-	public StmSeq(List<Stm> list) {
-		this.list = list;
+	public StmSeq(List<Stm> stms) {
+		this.stms = stms;
 	}
 
 	@Override
 	public void accept(Visitor visitor) throws Exception {
-		for (Stm stm : list) {
+		for (Stm stm : stms) {
 			stm.accept(visitor);
 		}
 	}

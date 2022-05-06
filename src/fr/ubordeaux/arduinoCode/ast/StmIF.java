@@ -3,23 +3,24 @@ package fr.ubordeaux.arduinoCode.ast;
 import fr.ubordeaux.arduinoCode.Token;
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// L'instruction if (<expr>) <stm> [else <stm>]
 public class StmIF extends Stm {
 
 	private Expr expr;
-	private Stm stm1;
-	private Stm stm2;
+	private Stm stmTrue;
+	private Stm stmFalse;
 
 	public StmIF(Token token, Expr expr, Stm stm1, Stm stm2) {
 		super(token);
 		this.expr = expr;
-		this.stm1 = stm1;
-		this.stm2 = stm2;
+		this.stmTrue = stm1;
+		this.stmFalse = stm2;
 	}
 
 	public StmIF(Token token, Expr expr, Stm stm1) {
 		super(token);
 		this.expr = expr;
-		this.stm1 = stm1;
+		this.stmTrue = stm1;
 	}
 
 	public Expr getExpr() {
@@ -27,11 +28,11 @@ public class StmIF extends Stm {
 	}
 
 	public Stm getStm1() {
-		return stm1;
+		return stmTrue;
 	}
 
 	public Stm getStm2() {
-		return stm2;
+		return stmFalse;
 	}
 
 	public void accept(Visitor visitor) throws Exception {

@@ -2,6 +2,7 @@ package fr.ubordeaux.arduinoCode.ast;
 
 import fr.ubordeaux.arduinoCode.visitor.Visitor;
 
+// L'instruction foreach <var> in <expr> <stm>
 public class StmFOREACH extends Stm {
 
 	private String var;

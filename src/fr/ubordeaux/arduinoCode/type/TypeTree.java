@@ -6,12 +6,10 @@ public class TypeTree implements Type {
 	protected Type left;
 	protected Type right;
 	private Object data;
-	private int size;
 	private int offset;
 	
 	public TypeTree(Tag tag) {
 		this.tag = tag;
-		size();
 	}
 
 	public TypeTree(Tag tag, Type left) {
@@ -34,33 +32,14 @@ public class TypeTree implements Type {
 		this.data = data;
 	}
 
-	private void size() {
-		switch (tag) {
-		case BOOLEAN:
-		case UINT8_T:
-		case INT8_T:
-		case ENUM:
-			size = 2;
-			break;
-		case UINT16_T:
-		case INT16_T:
-			size = 2;
-			break;
-		case UINT32_T:
-		case INT32_T:
-			size = 4;
-			break;
-		}
-	}
-	
 	@Override
 	public int getOffset() {
 		return offset;
 	}
 
 	@Override
-	public int getSize() {
-		return size;
+	public int size() {
+		return sizeMap.get(tag);
 	}
 
 	@Override
@@ -71,32 +50,6 @@ public class TypeTree implements Type {
 	@Override
 	public Type getRight() {
 		return right;
-	}
-
-	// Equivalent if same type
-	@Override
-	public boolean equivalent(Type type) {
-		if (this.getClass() != type.getClass()) {
-			return false;
-		}
-		if (left != null) {
-			if (right == null) {
-				return false;
-			}
-			else if (!left.equivalent(right)) {
-				return false;
-			}
-		} else {
-			if (right != null) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public boolean isBoolean() {
-		return tag == Tag.BOOLEAN;
 	}
 
 	@Override
@@ -111,6 +64,47 @@ public class TypeTree implements Type {
 	@Override
 	public void cast(Tag tag) {
 		this.tag = tag;
+	}
+
+	@Override
+	public String toString() {
+		return "TypeTree [tag=" + tag + "]";
+	}
+
+	@Override
+	public void attestEquivalentTo(Type type) throws TypeException {
+		System.err.println("Equ? " + this + "~" + type);
+		if (	(this.tag != type.getTag())
+				&& (!equivalenceMap.containsKey(tag) || !equivalenceMap.get(tag).contains(type.getTag()))) {
+			throw new TypeException("types should be equivalent: " + this + "<>" + type);
+		}
+		if ((tag != Tag.FREE) && (type.getTag() != Tag.FREE)) {
+			if (	(left == null && type.getLeft() != null) 
+				||	(right == null && type.getRight() != null) 
+				||	(right != null && type.getRight() == null)
+				||	(left != null && type.getRight() == null)){
+				throw new TypeException("types should be not null");
+			}
+		}
+		if (	left != null 
+				&& tag != Tag.FREE 
+				&& type.getLeft() != null 
+				&& type.getTag() != Tag.FREE) {
+				left.attestEquivalentTo(type.getLeft());
+		}
+		if (	right != null 
+				&& tag != Tag.FREE 
+				&& type.getRight() != null 
+				&& type.getTag() != Tag.FREE) {
+				right.attestEquivalentTo(type.getRight());
+		}
+	}
+
+	@Override
+	public void attestBoolean() throws TypeException {
+		if (tag != Tag.BOOLEAN) {
+			throw new TypeException("types should be boolean: ");
+		}
 	}
 
 }
