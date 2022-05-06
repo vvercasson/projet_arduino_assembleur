@@ -21,7 +21,7 @@
 	<property name="lexer" location="${source}/lexer" />
 	<property name="parser" location="${source}/parser" />
 
-	<property name="bison" location="/usr/local/opt/bison/bin/bison" />
+	<property name="bison" location="/usr/bin/bison" />
 	<property name="jflex" location="jflex" />
 	<property name="jflex.jar" location="${lib}/jflex-full-1.8.2.jar" />
 

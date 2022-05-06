@@ -1,6 +1,6 @@
 AVR_ARDUINO = lib/ArduinoCore-avr-master
 AVR_UART = lib/avr-uart-master
-USB = /dev/cu.usbserial-1410
+USB = /dev/ttyACM0
 
 .SUFFIXES: .arduinoCode .c .cpp .s .o .elf .hex .fuse
 JAVA = /usr/bin/java
