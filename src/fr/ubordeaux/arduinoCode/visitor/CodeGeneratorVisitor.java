@@ -357,9 +357,6 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 			sectionText += "	ldi " + currentRegister(1) + ", " + high + "\n";
 			expr.setRegister(currentRegisterCt);
 		}
-			break;
-		// La valeur de la constante est enregistrée dans le registre courant
-		case INT32_T:
 		case UINT32_T:
 		case F32_T: {
 			long value = 0;
@@ -437,6 +434,36 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 		}
 		currentRegisterCt += stm.getRight().size();
 		
+	}
+
+	@Override
+	public void visit(StmIF stm) throws Exception {
+		System.err.println("*** visit(StmIF) with " + this);
+		currentRegisterCt = 24;//?
+		stm.getExpr().accept(this);
+		sectionText += ";; <Code de la partie <TEST>\n";
+		sectionText += ";; dont le résultat (zero si faux)\n";
+		sectionText += ";; est dans le registre " + currentRegister() + "\n";
+		switch (stm.getToken().getCode() ){
+			case 293: //IF_TOKEN
+				sectionText += "tst " + currentRegister() +"\n";
+				sectionText += "breq .L2 \n";
+				stm.getStm2().accept(this);
+				sectionText += "rjmp .L4 \n";
+				sectionText += ".L4: \n";
+				break;
+			case 286: //ELSE_TOKEN
+				sectionText += "tst " + currentRegister() +"\n";
+				sectionText += "breq .L2 \n";
+				stm.getStm2().accept(this);
+				sectionText += "rjmp .L4 \n";
+				sectionText += ".L2:\n" ;
+				stm.getStm2().accept(this);
+				sectionText += ".L4: \n";
+				break;
+			default:
+				break;
+		}
 	}
 
 	// Purpose: Donne le nom de ce visitor

@@ -9,26 +9,26 @@ c : unsigned byte;
 begin
 pinMode(PIN_8, OUTPUT);
 pinMode(PIN_13, OUTPUT);
-loop{
+// loop{
 	c = getc();
 	putc(c);
 	if (c == 65) {
 		digitalWrite(PIN_8, HIGH);
-		delay_ms(1000);
+		// delay_ms(1000);
 	}
 	else {
 		digitalWrite(PIN_13, HIGH);
-		delay_ms(1000);
+		// delay_ms(1000);
 	}
 	if (c == 67) {
 		digitalWrite(PIN_8, LOW);
-		delay_ms(1000);
+		// delay_ms(1000);
 	}
 	if (c == 68) {
 		digitalWrite(PIN_13, LOW);
-		delay_ms(1000);
+		// delay_ms(1000);
 	}
-}
+// }
 end
 
 

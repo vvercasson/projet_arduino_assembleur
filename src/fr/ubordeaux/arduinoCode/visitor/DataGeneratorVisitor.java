@@ -78,6 +78,11 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 	   object.getRight().accept(this);
 	}
 
+	public void visit(StmIF object) throws Exception {
+		System.err.println("*** visit(stmIF) withDataGeneratorVisitor");
+		object.getExpr().accept(this);
+	}
+
 	// Purpose: Produit la partie data (en FLASH pour les constantes et
 	//		en SRAM pour les variables) de l'AVR Assembler
 	// Argument: ExprBinary object

@@ -13,7 +13,7 @@ pinMode(PIN_8, OUTPUT);
 pinMode(PIN_13, OUTPUT);
 	
 loop {
-	puts("Thank your for these precisions\n");
+	// puts("Thank your for these precisions\n");
 	digitalWrite(PIN_8, LOW);
 	digitalWrite(PIN_13, HIGH);
 	delay_s(1);
