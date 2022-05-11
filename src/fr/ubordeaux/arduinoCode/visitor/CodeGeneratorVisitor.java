@@ -439,27 +439,27 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 	@Override
 	public void visit(StmIF stm) throws Exception {
 		System.err.println("*** visit(StmIF) with " + this);
-		currentRegisterCt = 24;//?
+		currentRegisterCt = 24;
 		stm.getExpr().accept(this);
-		sectionText += ";; <Code de la partie <TEST>\n";
-		sectionText += ";; dont le résultat (zero si faux)\n";
-		sectionText += ";; est dans le registre " + currentRegister() + "\n";
+		sectionText += "	;; <Code de la partie <TEST>\n";
+		sectionText += "	;; dont le résultat (zero si faux)\n";
+		sectionText += "	;; est dans le registre " + currentRegister() + "\n";
 		switch (stm.getToken().getCode() ){
 			case 293: //IF_TOKEN
-				sectionText += "tst " + currentRegister() +"\n";
-				sectionText += "breq .L2 \n";
-				stm.getStm2().accept(this);
-				sectionText += "rjmp .L4 \n";
-				sectionText += ".L4: \n";
+				sectionText += "	tst " + currentRegister() +"\n";
+				sectionText += "	breq .L" + stm.getStm1().getId() + " \n";
+				stm.getStm1().accept(this);
+				// sectionText += "	rjmp .L" + stm.getStm1().getId()+1 + " \n";
+				sectionText += ".L" + stm.getStm1().getId() + ": \n";
 				break;
 			case 286: //ELSE_TOKEN
-				sectionText += "tst " + currentRegister() +"\n";
-				sectionText += "breq .L2 \n";
+				sectionText += "	tst " + currentRegister() +"\n";
+				sectionText += "	breq .L" + stm.getStm1().getId() + " \n";
+				stm.getStm1().accept(this);
+				sectionText += "	rjmp .L" + stm.getStm2().getId() + " \n";
+				sectionText += ".L" + stm.getStm1().getId() + ":\n" ;
 				stm.getStm2().accept(this);
-				sectionText += "rjmp .L4 \n";
-				sectionText += ".L2:\n" ;
-				stm.getStm2().accept(this);
-				sectionText += ".L4: \n";
+				sectionText += ".L" + stm.getStm2().getId() + ": \n";
 				break;
 			default:
 				break;
