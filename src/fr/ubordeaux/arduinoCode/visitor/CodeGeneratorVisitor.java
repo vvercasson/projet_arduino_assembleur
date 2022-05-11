@@ -466,6 +466,41 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 		}
 	}
 
+	@Override
+	public void visit(StmWHILE stm) throws Exception {
+		System.err.println("*** visit(StmWHILE) with " + this);
+		currentRegisterCt = 24;
+		stm.getExpr().accept(this);
+		sectionText += "rjmp .L" + stm.getStm().getId() + " :\n";
+		sectionText += ".L"+ (stm.getStm().getId()+1) +"\n";
+		sectionText += "    ;; Code de la partie <STM> \n" ; //
+		stm.getStm().accept(this);
+		sectionText += ".L" + stm.getStm().getId() + " :\n";
+		sectionText += "	;; <Code de la partie <TEST>\n";
+		sectionText += "	;; dont le résultat (zero si faux)\n";
+		sectionText += "	;; est dans le registre " + currentRegister() + "\n";
+		sectionText += "	tst " + currentRegister() +"\n";
+		sectionText += "	brne .L"+ (stm.getStm().getId()+1) + "\n";
+	}
+
+	@Override
+	public void visit(StmDO stm) throws Exception {
+		System.err.println("*** visit(StmDO) with " + this);
+		currentRegisterCt = 24;
+		stm.getExpr().accept(this);
+		//sectionText += "rjmp .L" + stm.getStm().getId() + " :\n";
+		sectionText += ".L"+ (stm.getStm().getId()+1) +"\n";
+		sectionText += "    ;; Code de la partie <STM> \n" ; //
+		stm.getStm().accept(this);
+		sectionText += ".L" + stm.getStm().getId() + " :\n";
+		sectionText += "	;; <Code de la partie <TEST>\n";
+		sectionText += "	;; dont le résultat (zero si faux)\n";
+		sectionText += "	;; est dans le registre " + currentRegister() + "\n";
+		sectionText += "	tst " + currentRegister() +"\n";
+		sectionText += "	brne .L"+ (stm.getStm().getId()+1) + "\n";
+
+	}
+
 	// Purpose: Donne le nom de ce visitor
 	@Override
 	public String toString() {
