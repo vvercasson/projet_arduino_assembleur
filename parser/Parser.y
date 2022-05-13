@@ -448,7 +448,7 @@ list_of_parameters:
 parameter:
 	IDENTIFIER ':' type { 
 		trace("*** REDUCE: parameter -> IDENTIFIER \':\' type "); 
-		$$ = new TypeTree(Type.Tag.FIELD, $1, $3); 
+		$$ = new TypeFIELD($1,$3);; 
 	}
 	;
 
@@ -535,7 +535,12 @@ stm:
  	| "continue" ';' { trace("*** REDUCE: stm -> \"continue\" \';\'"); $$ = new StmBREAK();}
  	| "return" expression ';' { trace("*** REDUCE: stm -> \"return\" expression \';\'"); $$ = new StmRETURN($2);}
 	| '{' list_of_stms '}' { trace("*** REDUCE: stm -> '{' list_of_stms '}'"); $$ = new StmSeq($2); }
-	;
+	| IDENTIFIER '(' list_of_expressions ')' ';' {
+		trace("*** REDUCE: expression -> IDENTIFIER \'(\' list_of_expressions \')\' \';\'");
+		ExprFUNCTION f = new ExprFUNCTION($1,$3);
+		$$ = new StmExpr(f);
+		}
+	;	
 
 // contenu d'un switch
 list_of_case_stms:

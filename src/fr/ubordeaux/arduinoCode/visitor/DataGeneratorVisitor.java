@@ -40,6 +40,20 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 			sectionSRAMData += "	;; Déclaration de la liste " + declVar.getName() + " sur 512 octets \n"; 
 			sectionSRAMData += "	.comm " + declVar.getName() + ",512"+ "\n"; 
 			break;
+		case FUNCTION:
+		case PROCEDURE:
+			sectionSRAMData += declVar.getName() + ":\n";
+			sectionSRAMData += "	push r28\n";
+			sectionSRAMData += "	push r29\n";
+			sectionSRAMData += "	push __tmp_reg__\n";
+			sectionSRAMData += "	in r28,__SP_L__\n";
+			sectionSRAMData += "	in r29,__SP_H__\n";
+			sectionSRAMData += "	; ; <Code de la fonction ici>";
+			sectionSRAMData += "	pop __tmp_reg__\n";
+			sectionSRAMData += "	pop r29\n";
+			sectionSRAMData += "	pop r28\n";
+			sectionSRAMData += "	ret\n";
+			break;
 		default:
 			sectionSRAMData += ";; Unimplemented  (CodeGeneratorVisitor.java line 348))\n"; 
 			break;
