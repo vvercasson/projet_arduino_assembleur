@@ -1,7 +1,9 @@
 package fr.ubordeaux.arduinoCode.visitor;
 
 import fr.ubordeaux.arduinoCode.ast.*;
+import fr.ubordeaux.arduinoCode.environment.Environment;
 import fr.ubordeaux.arduinoCode.type.Type;
+import fr.ubordeaux.arduinoCode.type.TypeTree;
 
 public class CodeGeneratorVisitor extends ConcreteVisitor {
 
@@ -116,6 +118,9 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 				break;
 			}
 		}
+		// else {
+		// 	sectionText += "	call " + expr.getName(); 
+		// }
 		Type output = expr.getType().getRight();
 		if (output != null) {
 			switch (output.getTag()) {
@@ -385,7 +390,6 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 			sectionText += "	ldi " + currentRegister(1) + ", hi8(" + String.valueOf(expr.getName()) + ")\n";
 			expr.setRegister(currentRegisterCt);
 			break;
-
 		default:
 			sectionText += ";; Unimplemented (CodeGeneratorVisitor.java line 393)\n";
 			break;
@@ -464,6 +468,66 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 			default:
 				break;
 		}
+	}
+
+	@Override
+	public void visit(ExprLIST expr) throws Exception {
+		System.err.println("*** visit(ExprLIST (" + expr.getType().getTag() + ") with " + this);
+		sectionText += "	;; On met une valeur dans le tableau";
+		int taille = expr.getList().size();
+		currentRegisterCt = 24;
+		for (int i = 0; i < taille; i++) {
+			switch(expr.getList().get(i).getType().getTag()) {
+				case INT8_T:
+				case UINT8_T:
+				case PIN:
+					sectionText += "	;; Copie variable dans tableau sur 8 bits\n";
+					sectionText += "	ldi " + currentRegister() + "," + expr.getList().get(i).getValue().toString() + "\n";// TROUVER COMMENT FAIRE + expr.getList().get(i);
+					sectionText += "	sts " + "NAME_LIST" + "+32," + currentRegister();
+					break;
+				case INT16_T:
+				case UINT16_T: {
+					sectionText += "	;; Copie variable dans tableau sur 16 bits\n";
+					long value = (long) expr.getList().get(i).getValue();
+					short high = (short) ((value >> 8) & 0xFF);
+					short low = (short) (value & 0xFF);
+					sectionText += "	ldi " + currentRegister() + ", " + low + "\n";
+					sectionText += "	ldi " + currentRegister(1) + ", " + high + "\n";
+					sectionText += "	sts " + "NAME_LIST" + "+32," + currentRegister();
+					sectionText += "	sts " + "NAME_LIST" + "+32+1," + currentRegister(1);
+					expr.setRegister(currentRegisterCt);
+					}	
+					break;
+				case INT32_T:
+				case UINT32_T:
+				case F32_T: {
+					sectionText += "	;; Copie variable dans tableau sur 32 bits\n";
+					long value = 0;
+					if (expr.getList().get(i).getValue() instanceof Float) {
+						Float f = (Float) expr.getList().get(i).getValue();
+						value = Float.floatToIntBits(f);
+					} else {
+						value = (Long) expr.getList().get(i).getValue();
+					}
+					int high = (short) (value >> 16);
+					int low = (short) (value & 0xFFFF);
+					sectionText += "	ldi " + currentRegister() + ", " + (low & 0xFF) + "\n";
+					sectionText += "	ldi " + currentRegister(1) + ", " + ((low >> 8) & 0xFF) + "\n";
+					sectionText += "	ldi " + currentRegister(2) + ", " + (high & 0xFF) + "\n";
+					sectionText += "	ldi " + currentRegister(3) + ", " + ((high >> 8) & 0xFF) + "\n";
+					sectionText += "	sts " + "NAME_LIST" + "+32," + currentRegister();
+					sectionText += "	sts " + "NAME_LIST" + "+32+1," + currentRegister(1);
+					sectionText += "	sts " + "NAME_LIST" + "+32+2," + currentRegister(2);
+					sectionText += "	sts " + "NAME_LIST" + "+32+3," + currentRegister(3);
+					expr.setRegister(currentRegisterCt);
+					}
+					break;
+				default:
+					sectionText += ";; Default\n";
+					break;
+			}
+		}
+		
 	}
 
 	// Purpose: Donne le nom de ce visitor

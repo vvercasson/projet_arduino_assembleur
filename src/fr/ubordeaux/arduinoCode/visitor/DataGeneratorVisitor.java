@@ -33,8 +33,12 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 		case INT32_T:
 		case UINT32_T:
 		case F32_T:
-				sectionSRAMData += "	;; Déclaration de la variable " + declVar.getName() + " sur " + declVar.size() + " octets \n"; 
-				sectionSRAMData += "	.comm " + declVar.getName() + ", " + declVar.size() + "\n"; 
+			sectionSRAMData += "	;; Déclaration de la variable " + declVar.getName() + " sur " + declVar.size() + " octets \n"; 
+			sectionSRAMData += "	.comm " + declVar.getName() + ", " + declVar.size() + "\n"; 
+			break;
+		case LIST:
+			sectionSRAMData += "	;; Déclaration de la liste " + declVar.getName() + " sur 512 octets \n"; 
+			sectionSRAMData += "	.comm " + declVar.getName() + ",512"+ "\n"; 
 			break;
 		default:
 			sectionSRAMData += ";; Unimplemented  (CodeGeneratorVisitor.java line 348))\n"; 
@@ -61,12 +65,24 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 				sectionFLASHData += expr.getName() + ":\n";
 				sectionFLASHData += "	.asciz	\"" + (String)expr.getValue() + "\"\n";
 			break;
-		
 		default:
 			break;
 		
 		}
 	}
+
+	// @Override
+	// public void visit(ExprLIST expr) throws Exception {
+	// 	System.err.println("*** visit(ExprLIST (" + expr.getType().getTag() + ") with " + this);
+	// 	switch (expr.getType().getTag()) {
+	// 	case LIST:
+	// 			sectionFLASHData += ".comm	NOM_VAR," + expr.size() + "\n";
+	// 		break;
+	// 	default:
+	// 		break;
+		
+	// 	}
+	// }
 	
 	// Purpose: Produit la partie data (en FLASH pour les constantes et
 	//		en SRAM pour les variables) de l'AVR Assembler
@@ -93,6 +109,24 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 	   object.getLeft().accept(this);
 	   object.getRight().accept(this);
 	}
+
+	// public void visit(ExprFUNCTION expr) throws Exception {
+	// 	System.err.println("*** visit(ExprFUNCTION) withDataGeneratorVisitor");
+	// 	if(expr.getDefined() == null) {
+	// 		sectionFLASHData += expr.getName() + ":\n";
+	// 		sectionFLASHData += "	push r28\n";
+	// 		sectionFLASHData += "	push r29\n";
+	// 		sectionFLASHData += "	push __tmp_reg__\n";
+	// 		sectionFLASHData += "	in r28,__SP_L__\n";
+	// 		sectionFLASHData += "	in r29,__SP_H__\n";
+	// 		sectionFLASHData += "	pop __tmp_reg__\n";
+	// 		sectionFLASHData += "	pop r29\n";
+	// 		sectionFLASHData += "	pop r28\n";
+	// 		sectionFLASHData += "	ret\n";
+			
+	// 		// expr.accept(this);
+	// 	}
+	//  }
 
 	// Purpose: Produit la partie data (en FLASH pour les constantes et
 	//		en SRAM pour les variables) de l'AVR Assembler
