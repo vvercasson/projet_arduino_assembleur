@@ -27,6 +27,18 @@ public class CheckTypeVisitor extends ConcreteVisitor {
 	}
 
 	@Override
+	public void visit(StmWHILE stm) throws TypeException {
+		System.err.println("*** visit(StmWHILE) with " + this);
+		stm.getExpr().getType().attestBoolean();
+	}
+
+	@Override
+	public void visit(StmDO stm) throws TypeException {
+		System.err.println("*** visit(StmDO) with " + this);
+		stm.getExpr().getType().attestBoolean();
+	}
+
+	@Override
 	public void visit(ExprFUNCTION expr) throws Exception {
 		System.err.println("*** visit(ExprFUNCTION) with " + this);
 		if (expr.getArguments() != null) {

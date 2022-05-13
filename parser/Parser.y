@@ -524,9 +524,12 @@ stm:
 	| left_part "||=" expression ';' { trace("*** REDUCE: stm -> left_part \"||=\" expression \';\'"); $$ = new StmAFF(StmAFF.Op.OR, $1, $3);}
 	| "if" '(' expression ')' '{' stm '}' "else" '{' stm '}' { trace("*** REDUCE: stm -> \"if\" \'(\' expression \')\' \'{\' stm \'}\' \"else\" \'{\' stm \'}\'"); $$ = new StmIF($8, $3, $6, $10);}
 	| "if" '(' expression ')' '{' stm '}' { trace("*** REDUCE: stm -> \"if\" \'(\' expression \')\' \'{\' stm \'}\'"); $$ = new StmIF($1, $3, $6);}
+	| "if" '(' expression ')' stm  "else" stm { trace("*** REDUCE: stm -> \"if\" \'(\' expression \')\' \'{\' stm \'}\' \"else\" \'{\' stm \'}\'"); $$ = new StmIF($6, $3, $5, $7);}
+	| "if" '(' expression ')' stm  { trace("*** REDUCE: stm -> \"if\" \'(\' expression \')\' \'{\' stm \'}\'"); $$ = new StmIF($1, $3, $5);}
 	| ATmega328p_procedure { trace("*** REDUCE: stm -> ATmega328p_procedure"); $$ = new StmExpr($1); }
 	| "switch" '(' expression ')' '{' list_of_case_stms '}' { trace("*** REDUCE: stm -> \"switch\" \'(\' expression \')\' \'{\' list_of_case_stms \'}\'"); $$ = new StmSWITCH($3, $6);}
 	| "do" stm "while" '(' expression ')' ';' { trace("*** REDUCE: stm -> \"do\" stm \"while\" \'(\' expression \')\' \';\'"); $$ = new StmDO($2, $5);}
+	| "while" '(' expression ')' '{' stm '}' { trace("*** REDUCE: stm -> \"while\" \'(\' expression \')\' \'{\' stm \'}\'"); $$ = new StmWHILE($3, $6);}
 	| "loop" stm { trace("*** REDUCE: stm -> \"loop\" stm"); $$ = new StmLOOP($2);}
  	| "break" ';' { trace("*** REDUCE: stm -> \"break\" \';\'"); $$ = new StmBREAK();}
  	| "continue" ';' { trace("*** REDUCE: stm -> \"continue\" \';\'"); $$ = new StmBREAK();}
