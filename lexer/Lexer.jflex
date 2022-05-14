@@ -64,10 +64,10 @@ package fr.ubordeaux.arduinoCode;
 	    	System.err.printf("*** TOKEN: PIN=" + lval + " (line:%d, column:%d)\n", yyline+1, yycolumn+1);
 	    	break;
 		case HEXA:
-	    	System.err.printf("*** TOKEN: HEXA=" + lval + " (line:%d, column:%d)\n", yyline+1, yycolumn+1);
+	    	System.err.printf("*** TOKEN: HEXA=" + lval + " (line:%d, column:%d)\n", yyline+1, yycolumn+1); // On rajoute le message pour le makeToken de Hexa
 	    	break;
 		case BINAIRE:
-	    	System.err.printf("*** TOKEN: BINAIRE=" + lval + " (line:%d, column:%d)\n", yyline+1, yycolumn+1);
+	    	System.err.printf("*** TOKEN: BINAIRE=" + lval + " (line:%d, column:%d)\n", yyline+1, yycolumn+1); // On rajoute le message pour le makeToken de Binaire
 	    	break;
 		case INTEGER:
 	    	System.err.printf("*** TOKEN: INTEGER=" + lval + " (line:%d, column:%d)\n", yyline+1, yycolumn+1); 	
@@ -90,8 +90,8 @@ package fr.ubordeaux.arduinoCode;
     }
     
 %}
-Hexa = 0x[A-F0-9]+
-Binaire = B[01]+
+Hexa = 0x[A-F0-9]+ // Analyse lexicale d'un hexadecimal
+Binaire = B[01]+ // Analyse lexicale d'une suite binaire
 Integer = [[:digit:]]+
 Decimal = {Integer} (\. {Integer})?
 Float = {Decimal} ([Ee][+-]?{Integer})?
@@ -208,8 +208,8 @@ CommentLine = "//".*
 "PIN_A"[0-5]			{ return makeToken(PIN, Integer.parseInt(yytext().substring(5))+14); }
 
 /* FREE TOKENS */
-{Hexa}			{ return makeToken(HEXA,Integer.parseInt(yytext().substring(2),16)); }
-{Binaire}		{ return makeToken(BINAIRE,Integer.parseInt(yytext().substring(1),2)); }
+{Hexa}			{ return makeToken(HEXA,Integer.parseInt(yytext().substring(2),16)); } // Utilisation de la fonction makeToken pour Hexa (parseInt base16)
+{Binaire}		{ return makeToken(BINAIRE,Integer.parseInt(yytext().substring(1),2)); } // Utilisation de la fonction makeToken pour Binaire (parseInt base2)
 {Integer}		{ return makeToken(INTEGER, Long.parseLong(yytext())); }
 {Float}			{ return makeToken(FLOAT, Float.parseFloat(yytext())); }
 {Identifier}	{ return makeToken(IDENTIFIER, yytext()); }

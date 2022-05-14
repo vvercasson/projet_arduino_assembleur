@@ -41,8 +41,8 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 			sectionSRAMData += "	.comm " + declVar.getName() + ",512"+ "\n"; 
 			break;
 		case FUNCTION:
-		case PROCEDURE:
-			sectionSRAMData += declVar.getName() + ":\n";
+		case PROCEDURE: // On déclare les fonctions et les procédures
+			sectionSRAMData += declVar.getName() + ":\n"; // On recupère le nom de la fonction
 			sectionSRAMData += "	push r28\n";
 			sectionSRAMData += "	push r29\n";
 			sectionSRAMData += "	push __tmp_reg__\n";

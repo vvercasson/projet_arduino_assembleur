@@ -221,8 +221,8 @@
 	DELAY_S_KEYWORD "delay_s"
 
 /* TOKEN WITH CONTENT */
-%token <Integer> HEXA
-%token <Integer> BINAIRE
+%token <Integer> HEXA // Ajout du Token HEXA
+%token <Integer> BINAIRE // Ajout du Token BINAIRE
 %token <String> IDENTIFIER
 %token <Long> INTEGER
 %token <Integer> PIN
@@ -671,11 +671,11 @@ constant_expression:
 	}
 	| HEXA { 
 		trace("*** REDUCE: constant_expression -> PIN");
-	  	$$ = new ExprCONSTANT(new TypeTree(Type.Tag.UINT16_T), $1);
+	  	$$ = new ExprCONSTANT(new TypeTree(Type.Tag.UINT16_T), $1); // Ajout du type Hexadecimal en Expression constante
 	}
 	| BINAIRE { 
 		trace("*** REDUCE: constant_expression -> PIN");
-	  	$$ = new ExprCONSTANT(new TypeTree(Type.Tag.UINT8_T), $1);
+	  	$$ = new ExprCONSTANT(new TypeTree(Type.Tag.UINT8_T), $1); // Ajout du type Binaire en Expression constante
 	}
 	| INTEGER { 
 		trace("*** REDUCE: constant_expression -> INTEGER");
