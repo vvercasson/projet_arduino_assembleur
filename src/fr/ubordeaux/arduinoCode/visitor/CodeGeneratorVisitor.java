@@ -118,9 +118,9 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 				break;
 			}
 		}
-		// else {
-		// 	sectionText += "	call " + expr.getName(); 
-		// }
+		else {
+			sectionText += "	call " + expr.getName(); 
+		}
 		Type output = expr.getType().getRight();
 		if (output != null) {
 			switch (output.getTag()) {
@@ -561,6 +561,30 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 		sectionText += "	tst " + currentRegister() +"\n";
 		sectionText += "	brne .L"+ (stm.getStm().getId()+1) + "\n";
 
+	}
+
+	@Override
+	public void visit(StmFOREACH stm) throws Exception {
+		System.err.println("*** visit(StmFOREACH) with " + this);
+ 
+		currentRegisterCt = 24;
+
+		stm.getExpr().accept(this);
+		sectionText += "	ldi " + currentRegister() + "," + stm.getVar() + "+1" + "\n";
+		sectionText += "	std " + stm.getVar() + "+1" + "," + currentRegister() + "\n";
+		sectionText += "	rjump .L" + stm.getId() + ":\n";
+		sectionText += ".L"+ stm.getStm().getId() +":\n";
+		stm.getStm().accept(this);
+		sectionText += "	; ; On incrémente x (en retranchant 255)\n";
+		sectionText += "	ldd " + currentRegister() + "," + stm.getVar() + "+1" + "\n";
+		sectionText += "	subi " + currentRegister() + "," + "OxFF" + "\n";
+		sectionText += "	std " + stm.getVar() + "+1" + "," + currentRegister() + "\n\n";
+		sectionText += ".L" + stm.getId() + "\n";
+		sectionText += "	;; On teste si égale à <MAX>\n";
+		sectionText += "	;; on boucle sur .L"+ (stm.getStm().getId()+1)+"\n";
+		sectionText += "	ldd " + currentRegister() + "," + stm.getVar() + "+1" + "\n";
+		sectionText += "	cpi " + currentRegister() + "," + "<MAX>" + "\n";
+		sectionText += "	brne .L"+ stm.getStm().getId() + "\n\n";
 	}
 
 	// Purpose: Donne le nom de ce visitor

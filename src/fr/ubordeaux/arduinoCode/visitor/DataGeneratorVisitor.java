@@ -85,6 +85,22 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 		}
 	}
 
+	public void visit(ExprFUNCTION expr) throws Exception {
+		System.err.println("*** visit(ExprFUNCTION) withDataGeneratorVisitor");
+		if(expr.getDefined() == null) {
+			sectionFLASHData += expr.getName() + ":\n";
+	 		sectionFLASHData += "	push r28\n";
+	 		sectionFLASHData += "	push r29\n";
+	 		sectionFLASHData += "	push __tmp_reg__\n";
+	 		sectionFLASHData += "	in r28,__SP_L__\n";
+	 		sectionFLASHData += "	in r29,__SP_H__\n";
+	 		sectionFLASHData += "	pop __tmp_reg__\n";
+	 		sectionFLASHData += "	pop r29\n";
+	 		sectionFLASHData += "	pop r28\n";
+	 		sectionFLASHData += "	ret\n";
+	 	}
+	}
+
 	// @Override
 	// public void visit(ExprLIST expr) throws Exception {
 	// 	System.err.println("*** visit(ExprLIST (" + expr.getType().getTag() + ") with " + this);
@@ -123,6 +139,11 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 		object.getExpr().accept(this);
 	}
 
+	public void visit(StmFOREACH object) throws Exception {
+		System.err.println("*** visit(stmFOREACH) withDataGeneratorVisitor");
+		object.getExpr().accept(this);
+	}
+
 	// Purpose: Produit la partie data (en FLASH pour les constantes et
 	//		en SRAM pour les variables) de l'AVR Assembler
 	// Argument: ExprBinary object
@@ -134,23 +155,6 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 	   object.getRight().accept(this);
 	}
 
-	// public void visit(ExprFUNCTION expr) throws Exception {
-	// 	System.err.println("*** visit(ExprFUNCTION) withDataGeneratorVisitor");
-	// 	if(expr.getDefined() == null) {
-	// 		sectionFLASHData += expr.getName() + ":\n";
-	// 		sectionFLASHData += "	push r28\n";
-	// 		sectionFLASHData += "	push r29\n";
-	// 		sectionFLASHData += "	push __tmp_reg__\n";
-	// 		sectionFLASHData += "	in r28,__SP_L__\n";
-	// 		sectionFLASHData += "	in r29,__SP_H__\n";
-	// 		sectionFLASHData += "	pop __tmp_reg__\n";
-	// 		sectionFLASHData += "	pop r29\n";
-	// 		sectionFLASHData += "	pop r28\n";
-	// 		sectionFLASHData += "	ret\n";
-			
-	// 		// expr.accept(this);
-	// 	}
-	//  }
 
 	// Purpose: Produit la partie data (en FLASH pour les constantes et
 	//		en SRAM pour les variables) de l'AVR Assembler

@@ -527,6 +527,7 @@ stm:
 	| "if" '(' expression ')' stm  "else" stm { trace("*** REDUCE: stm -> \"if\" \'(\' expression \')\' \'{\' stm \'}\' \"else\" \'{\' stm \'}\'"); $$ = new StmIF($6, $3, $5, $7);}
 	| "if" '(' expression ')' stm  { trace("*** REDUCE: stm -> \"if\" \'(\' expression \')\' \'{\' stm \'}\'"); $$ = new StmIF($1, $3, $5);}
 	| ATmega328p_procedure { trace("*** REDUCE: stm -> ATmega328p_procedure"); $$ = new StmExpr($1); }
+	| "foreach" IDENTIFIER "in" expression '{' stm '}' { trace("*** REDUCE: stm -> \"foreach\" IDENTIFIER \"in\" \' expression \' \"in\" \' expression \' \'{\' stm \'}\'"); $$ = new StmFOREACH($2,$4,$6);}
 	| "switch" '(' expression ')' '{' list_of_case_stms '}' { trace("*** REDUCE: stm -> \"switch\" \'(\' expression \')\' \'{\' list_of_case_stms \'}\'"); $$ = new StmSWITCH($3, $6);}
 	| "do" stm "while" '(' expression ')' ';' { trace("*** REDUCE: stm -> \"do\" stm \"while\" \'(\' expression \')\' \';\'"); $$ = new StmDO($2, $5);}
 	| "while" '(' expression ')' '{' stm '}' { trace("*** REDUCE: stm -> \"while\" \'(\' expression \')\' \'{\' stm \'}\'"); $$ = new StmWHILE($3, $6);}
@@ -540,6 +541,7 @@ stm:
 		ExprFUNCTION f = new ExprFUNCTION($1,$3);
 		$$ = new StmExpr(f);
 		}
+	
 	;	
 
 // contenu d'un switch

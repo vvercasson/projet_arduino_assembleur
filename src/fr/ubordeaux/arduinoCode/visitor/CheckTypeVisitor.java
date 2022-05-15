@@ -39,6 +39,12 @@ public class CheckTypeVisitor extends ConcreteVisitor {
 	}
 
 	@Override
+	public void visit(StmFOREACH stm) throws Exception {
+   		System.err.println("*** visit(StmFOREACH) withCheckTypeVisitor");
+		stm.getExpr().setType(stm.getExpr().getType());
+	}
+
+	@Override
 	public void visit(ExprFUNCTION expr) throws Exception {
 		System.err.println("*** visit(ExprFUNCTION) with " + this);
 		if (expr.getArguments() != null) {
@@ -46,6 +52,11 @@ public class CheckTypeVisitor extends ConcreteVisitor {
 				arg.accept(this);
 			}
 		}
+	}
+
+	@Override
+	public void visit(ExprVAR object) throws Exception {
+		System.err.println("*** visit(ExprVAR) with " + this);
 	}
 
 	@Override
