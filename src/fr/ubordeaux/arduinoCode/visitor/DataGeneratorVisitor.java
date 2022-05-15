@@ -36,7 +36,7 @@ public class DataGeneratorVisitor extends ConcreteVisitor {
 			sectionSRAMData += "	;; Déclaration de la variable " + declVar.getName() + " sur " + declVar.size() + " octets \n"; 
 			sectionSRAMData += "	.comm " + declVar.getName() + ", " + declVar.size() + "\n"; 
 			break;
-		case LIST:
+		case LIST: // On déclare les listes
 			sectionSRAMData += "	;; Déclaration de la liste " + declVar.getName() + " sur 512 octets \n"; 
 			sectionSRAMData += "	.comm " + declVar.getName() + ",512"+ "\n"; 
 			break;

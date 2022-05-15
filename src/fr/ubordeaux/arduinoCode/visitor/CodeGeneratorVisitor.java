@@ -470,12 +470,16 @@ public class CodeGeneratorVisitor extends ConcreteVisitor {
 		}
 	}
 
+	// Code Geneator des listes
+	// Problème  rencontré : Récupérer le nom de la liste,
+	// c'est pourquoi dans les lignes de génération des "sts"
+	// Nous avons écris NAME_LIST au lieu du vrai nom
 	@Override
 	public void visit(ExprLIST expr) throws Exception {
 		System.err.println("*** visit(ExprLIST (" + expr.getType().getTag() + ") with " + this);
-		sectionText += "	;; On met une valeur dans le tableau";
 		int taille = expr.getList().size();
 		currentRegisterCt = 24;
+		// Pour chaque élement à ajouter on vérifie son type et on l'ajoute
 		for (int i = 0; i < taille; i++) {
 			switch(expr.getList().get(i).getType().getTag()) {
 				case INT8_T:
